@@ -1,7 +1,7 @@
 //create a redux toolkit slice reducer for for logging in users
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-//import  RootState from '../../store';
+import  {RootState} from '../../store';
 
 interface UserState {
     password: string;
@@ -26,7 +26,7 @@ export const userSlice = createSlice({
 
 export const { user } = userSlice.actions;
 
-//export const selectUser = (state: RootState) => state.user.value;
+export const userSelector = (state: RootState) => state.user;
 
 export default userSlice.reducer;
 
