@@ -14,10 +14,10 @@ function Register() {
     const [firstName, setFirstName] = useState("");
     const [lastName,setLastName] = useState("");
     //const [user, setUser] = useState(null);
-    const [errors, setErrors] = useState([""])
+    const [validationErrors, setValidationErrors] = useState([""])
 
 
-    const [registerUser] = useRegisterUserMutation();
+    const [registerUser, {error}] = useRegisterUserMutation();
 
     const navigate = useNavigate();
 
@@ -32,16 +32,19 @@ function Register() {
         
         const validationErrors = await registrationInputValidator(userData)
         if(validationErrors) {
-            setErrors(validationErrors)
+            setValidationErrors(validationErrors)
         } else {
         
             const response = await registerUser(userData)
-            console.log(response)
-            navigate('/login')
+            if(error) {
+                console.log(error)
+            }
+            //navigate('/login')
         }
        }
                 
-      
+      useEffect(() => {
+      }, [error])
     
         
        
@@ -55,7 +58,10 @@ function Register() {
             </p>
         </header>
         <div>
-        {errors.length > 1 ? JSON.stringify(errors): ''}
+        {validationErrors.length > 1 ? JSON.stringify(validationErrors): ''}
+        </div>
+        <div>
+        {error ? JSON.stringify(error): ''}
         </div>
         <div>
             <form onSubmit={handleSubmit}>
