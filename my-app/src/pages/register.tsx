@@ -1,8 +1,9 @@
 //create a component that registers users with an email and password
 
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {useRegisterUserMutation} from '../services/usersApi';
 import { useNavigate } from 'react-router-dom';
+import registrationInputValidator from '../utilities/registrationInputValidator';
 
 
 
@@ -12,25 +13,38 @@ function Register() {
     const [password, setPassword] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName,setLastName] = useState("");
-    const [user, setUser] = useState(null);
+    //const [user, setUser] = useState(null);
+    const [errors, setErrors] = useState([""])
+
 
     const [registerUser] = useRegisterUserMutation();
 
     const navigate = useNavigate();
 
-    const handleSubmit = (event: any) => {
+    const handleSubmit = async (event: any) => {
         event.preventDefault();
         const userData = {
-            firstName,
-            lastName,
-            email,
-            password,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password,
         };
-        console.log(userData)
-        registerUser(userData).then(response => navigate('/login'));
-
-    }
         
+        const validationErrors = await registrationInputValidator(userData)
+        if(validationErrors) {
+            setErrors(validationErrors)
+        } else {
+        
+            const response = await registerUser(userData)
+            console.log(response)
+            navigate('/login')
+        }
+       }
+                
+      
+    
+        
+       
 
 
     return (
@@ -40,6 +54,9 @@ function Register() {
             Register Page
             </p>
         </header>
+        <div>
+        {errors.length > 1 ? JSON.stringify(errors): ''}
+        </div>
         <div>
             <form onSubmit={handleSubmit}>
                 <label>
