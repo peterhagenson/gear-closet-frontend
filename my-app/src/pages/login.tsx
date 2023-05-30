@@ -1,9 +1,12 @@
-//create react component for login page with inputs for username and password and one button to submit
 
 import {useState} from 'react';
 
 
 function Login() {
+
+const [email, setUserName] = useState('')
+const [password, setPasswrod] = useState('')
+
 
 
 
@@ -16,7 +19,7 @@ function Login() {
           </p>
         </header>
         <div>
-          <form>
+          <form >
             <label>
               Username:
               <input type="text" name="username" />
