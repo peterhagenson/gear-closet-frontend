@@ -1,19 +1,26 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import User  from '../models/user';
+import {RegisterUser, LoginUser}  from '../models/userTypes';
 
 export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:3000'}),
     endpoints: (builder) => ({
-        registerUser: builder.mutation<User, object>({
+        registerUser: builder.mutation<RegisterUser, object>({
             query: (creds) => ({
                 url: '/register',
                 method: 'POST',
                 body: creds
             })
         }),
+        loginUser: builder.mutation<LoginUser, object>({
+            query: (creds) => ({
+                url: '/login',
+                method: 'POST',
+                body: creds
+                })
     })
+})
 });
 
-export const {useRegisterUserMutation} = userApi;
+export const {useRegisterUserMutation, useLoginUserMutation} = userApi;
 export default userApi.reducer;

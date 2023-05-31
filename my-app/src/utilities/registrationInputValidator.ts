@@ -1,4 +1,3 @@
-import { Request } from 'express';
 
 const registrationInputValidator = (userData: any) => {
     const {firstName, lastName, email, password} = userData
