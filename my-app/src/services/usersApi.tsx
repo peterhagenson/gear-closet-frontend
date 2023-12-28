@@ -3,7 +3,7 @@ import {RegisterUser, LoginUser}  from '../models/userTypes';
 
 export const userApi = createApi({
     reducerPath: 'userApi',
-    baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:3000'}),
+    baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:3001'}),
     endpoints: (builder) => ({
         registerUser: builder.mutation<RegisterUser, object>({
             query: (creds) => ({
