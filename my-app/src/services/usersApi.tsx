@@ -1,5 +1,7 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {RegisterUser, LoginUser}  from '../models/userTypes';
+import {RegisterUser, LoginUser, LoggedOnUser, AccessToken, Users}  from '../models/userTypes';
+
+
 
 export const userApi = createApi({
     reducerPath: 'userApi',
@@ -12,15 +14,24 @@ export const userApi = createApi({
                 body: creds
             })
         }),
-        loginUser: builder.mutation<LoginUser, object>({
+        loginUser: builder.query<LoggedOnUser, object>({
             query: (creds) => ({
                 url: '/login',
                 method: 'POST',
                 body: creds
                 })
-    })
-})
+    }),
+        getUsers: builder.query<LoggedOnUser, AccessToken>({
+        query: (user) => ({
+            url: '/users',
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${user.accessToken}`
+            }
+            })
+}),
+    }),
 });
 
-export const {useRegisterUserMutation, useLoginUserMutation} = userApi;
+export const {useRegisterUserMutation, useLazyLoginUserQuery, useGetUsersQuery} = userApi;
 export default userApi.reducer;

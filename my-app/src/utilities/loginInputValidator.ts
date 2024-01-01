@@ -2,9 +2,9 @@
 import { LoginUser } from "../models/userTypes";
 
 const loginInputValidator = (userCreds: LoginUser) => {
-    const { email, password } = userCreds;
+    const { username, password } = userCreds;
     const errors: string[] = [];
-    if (!email) {
+    if (!username) {
         errors.push('Username is required');
     }   
     if (!password) {    

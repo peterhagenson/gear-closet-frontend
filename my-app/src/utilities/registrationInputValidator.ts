@@ -1,12 +1,9 @@
 
 const registrationInputValidator = (userData: any) => {
-    const {firstName, lastName, email, password} = userData
+    const {username, email, password} = userData
     const errors: string[] = [];
-    if (!firstName) {
-        errors.push('First name is required');
-    }
-    if (!lastName) {
-        errors.push('Last name is required');
+    if (!username) {
+        errors.push('Username is required');
     }
     if (!email) {
         errors.push('Email is required');

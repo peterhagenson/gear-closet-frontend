@@ -11,8 +11,8 @@ function Register() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName,setLastName] = useState("");
+    const [userName, setUserName] = useState("");
+    //const [lastName,setLastName] = useState("");
     //const [user, setUser] = useState(null);
     const [validationErrors, setValidationErrors] = useState([""])
 
@@ -24,8 +24,7 @@ function Register() {
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         const userData = {
-            firstName: firstName,
-            lastName: lastName,
+            username: userName,
             email: email,
             password: password,
         };
@@ -36,6 +35,7 @@ function Register() {
         } else {
         
             const response = await registerUser(userData)
+            console.log(response);
             if(error) {
                 console.log(error)
             }
@@ -65,13 +65,10 @@ function Register() {
         </div>
         <div>
             <form onSubmit={handleSubmit}>
-                <label>
-                First Name:
-                <input type="text" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-            </label>
+
             <label>                                                 
-                Last Name:
-                <input type="text" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                Username:
+                <input type="text" name="userName" value={userName} onChange={(e) => setUserName(e.target.value)} />
             </label>
             <label>
                 Email:

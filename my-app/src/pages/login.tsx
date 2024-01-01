@@ -1,34 +1,46 @@
 
 import {useEffect, useState} from 'react';
 import loginInputValidator from '../utilities/loginInputValidator';
-import { useLoginUserMutation } from '../services/usersApi';
+import { useLazyLoginUserQuery } from '../services/usersApi';
+import { useDispatch } from 'react-redux';
+import {userActions} from '../redux/users/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 
 function Login() {
 
-const [email, setEmail] = useState('')
+const [username, setUsername] = useState('')
 const [password, setPassword] = useState('')
+const [userNotFound, setUserNotFound] = useState(false)
 const [validationErrors, setValidationErrors] = useState([""])
-const [loginUser, {error}] = useLoginUserMutation();
+const [loginUser, {error}] = useLazyLoginUserQuery();
 
+
+const dispatch = useDispatch()
+const navigate = useNavigate()
 
 
 const handleLogin = async (event: any) => {
   event.preventDefault()
   const userCreds = {
-    email: email,
+    username: username,
     password: password
   }
   const validationErrors = await loginInputValidator(userCreds)
         if(validationErrors) {
             setValidationErrors(validationErrors)
         } else {
-        
-            const response = await loginUser(userCreds)
-            console.log(response)
+            await loginUser(userCreds)
+            .then((response: any) => {
+              console.log(response)
+              if(response?.data?.accessToken) {
+              dispatch(userActions.user({username: response.data.username, accessToken: response.data.accessToken}))
+              navigate('/')
+              } else {
+                setUserNotFound(true)
             }
-            //navigate('/login')
-        }
+            })
+        }}
 
 
     return (
@@ -39,10 +51,13 @@ const handleLogin = async (event: any) => {
           </p>
         </header>
         <div>
+          {userNotFound && <p>User not found</p>}
+        </div>
+        <div>
           <form onSubmit={handleLogin}>
             <label>
-              Email:
-              <input type="text" name="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+              Username:
+              <input type="text" name="username" value={username} onChange={(e) => setUsername(e.target.value)}/>
             </label>
             <label>
 
@@ -58,7 +73,3 @@ const handleLogin = async (event: any) => {
   }
 
 export default Login;
-
-
-
-
